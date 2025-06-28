@@ -45,4 +45,16 @@ public class RoupaController {
     	}
     	roupaRepository.deleteById(id);
     }
+    @PutMapping("/{id}")
+    public Roupa atualizarRoupa(@PathVariable Long id, @RequestBody RoupaDTO dto) {
+        Roupa roupaExistente = roupaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Roupa não encontrada"));
+
+        roupaExistente.setNome(dto.getNome());
+        roupaExistente.setTamanho(dto.getTamanho());
+        roupaExistente.setPreco(dto.getPreco());
+        roupaExistente.setTipo(TipoRoupa.fromId(dto.getTipoId()));
+
+        return roupaRepository.save(roupaExistente);
+    }
 }
